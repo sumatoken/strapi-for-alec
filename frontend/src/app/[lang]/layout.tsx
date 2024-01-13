@@ -7,7 +7,9 @@ import { i18n } from "../../../i18n-config";
 import Banner from "./components/Banner";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
-import {FALLBACK_SEO} from "@/app/[lang]/utils/constants";
+import { FALLBACK_SEO } from "@/app/[lang]/utils/constants";
+import { MainNav } from "./dashboard/components/main-nav";
+import { UserNav } from "./dashboard/components/user-nav";
 
 
 async function getGlobal(lang: string): Promise<any> {
@@ -36,7 +38,7 @@ async function getGlobal(lang: string): Promise<any> {
   return await fetchAPI(path, urlParamsObject, options);
 }
 
-export async function generateMetadata({ params } : { params: {lang: string}}): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: { lang: string } }): Promise<Metadata> {
   const meta = await getGlobal(params.lang);
 
   if (!meta.data) return FALLBACK_SEO;
@@ -63,7 +65,7 @@ export default async function RootLayout({
   const global = await getGlobal(params.lang);
   // TODO: CREATE A CUSTOM ERROR PAGE
   if (!global.data) return null;
-  
+
   const { notificationBanner, navbar, footer } = global.data.attributes;
 
   const navbarLogoUrl = getStrapiMedia(
@@ -77,17 +79,21 @@ export default async function RootLayout({
   return (
     <html lang={params.lang}>
       <body>
-        <Navbar
-          links={navbar.links}
-          logoUrl={navbarLogoUrl}
-          logoText={navbar.navbarLogo.logoText}
-        />
+        <div className="border-b">
+          <div className="flex h-16 items-center px-4">
+            <MainNav className="mx-6" />
+            <div className="ml-auto flex items-center space-x-4">
+              <UserNav />
+            </div>
+          </div>
+        </div>
+
 
         <main className="dark:bg-black dark:text-gray-100 min-h-screen">
           {children}
         </main>
 
-        <Banner data={notificationBanner} />
+        {/* <Banner data={notificationBanner} /> */}
 
         <Footer
           logoUrl={footerLogoUrl}

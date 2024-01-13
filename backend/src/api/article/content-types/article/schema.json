@@ -47,8 +47,7 @@
         "shared.quote",
         "shared.rich-text",
         "shared.slider",
-        "shared.video-embed",
-        "elements.table"
+        "shared.video-embed"
       ]
     },
     "authorsBio": {
